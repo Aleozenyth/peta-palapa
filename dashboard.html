@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard NOC &amp; CRM · Palapa Ring</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+
+  <header class="sticky top-0 z-30 bg-slate-900/90 backdrop-blur border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3 flex-wrap">
+      <div>
+        <h1 class="font-bold">📊 Dashboard NOC &amp; CRM Palapa Ring</h1>
+        <p class="text-xs text-slate-400">Monitoring operasional · data simulasi (mockup)</p>
+      </div>
+      <span class="ml-auto flex items-center gap-2 text-xs text-emerald-400"><i class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></i> Live</span>
+      <a href="index.html" class="rounded-lg bg-sky-500 text-slate-950 text-xs font-semibold px-3 py-2 hover:brightness-110">🌐 Kembali ke Peta</a>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-4 space-y-4">
+
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div class="card"><span>Total Node</span><b id="m-node">0</b><small id="m-node-sub"></small></div>
+      <div class="card"><span>Total Panjang Kabel</span><b id="m-km">0 km</b><small>estimasi geodesik</small></div>
+      <div class="card"><span>Uptime Jaringan</span><b id="m-uptime" class="text-emerald-400">0%</b><small>rata-rata 30 hari (simulasi)</small></div>
+      <div class="card"><span>Bandwidth Terpakai</span><b id="m-bw">0 Gbps</b><small id="m-bw-sub"></small></div>
+    </section>
+
+    <section class="grid lg:grid-cols-3 gap-4">
+      <div class="panel lg:col-span-2">
+        <h2 class="panel-title">📡 Traffic Jaringan Realtime (Gbps)</h2>
+        <div class="h-64"><canvas id="chart-traffic"></canvas></div>
+      </div>
+      <div class="panel">
+        <h2 class="panel-title">🩺 Kesehatan Node per Paket</h2>
+        <div class="h-64"><canvas id="chart-health"></canvas></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <h2 class="panel-title !mb-0">🗂️ Status Node</h2>
+        <input id="tbl-search" type="search" placeholder="Cari node / wilayah…"
+               class="ml-auto rounded-lg bg-slate-950 border border-slate-700 px-3 py-2 text-sm outline-none focus:border-sky-400 w-full sm:w-64">
+      </div>
+      <div id="tbl-filter" class="flex flex-wrap gap-2 mb-3 text-xs">
+        <button data-s="all" class="chip active">Semua</button>
+        <button data-s="Online" class="chip">Online</button>
+        <button data-s="Degradation" class="chip">Degradation</button>
+        <button data-s="Maintenance" class="chip">Maintenance</button>
+      </div>
+      <div class="overflow-x-auto rounded-lg border border-slate-800">
+        <table class="w-full text-sm">
+          <thead class="bg-slate-800/60 text-xs uppercase text-slate-400">
+            <tr>
+              <th class="th" data-k="nama">Node</th><th class="th" data-k="paket">Paket</th>
+              <th class="th" data-k="wilayah">Wilayah</th><th class="th" data-k="tipe">Tipe</th>
+              <th class="th text-right" data-k="kapasitasGbps">Kapasitas</th>
+              <th class="th text-right" data-k="util">Utilisasi</th><th class="th" data-k="status">Status</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-body"></tbody>
+        </table>
+      </div>
+      <p id="tbl-info" class="text-xs text-slate-500 mt-2"></p>
+    </section>
+  </main>
+
+  <style>
+    .card { background:#0f172a; border:1px solid #1e293b; border-radius:.9rem; padding:1rem; }
+    .card span { display:block; font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:#94a3b8; }
+    .card b { display:block; font-size:1.7rem; margin:.25rem 0; }
+    .card small { color:#64748b; font-size:.7rem; }
+    .chip { border:1px solid #334155; border-radius:999px; padding:.3rem .8rem; color:#cbd5e1; transition:.15s; }
+    .chip:hover { background:#1e293b; }
+    .chip.active { background:#38bdf8; color:#020617; border-color:#38bdf8; font-weight:700; }
+    .th { text-align:left; padding:.7rem .9rem; cursor:pointer; user-select:none; white-space:nowrap; }
+    .th:hover { color:#e2e8f0; }
+    #tbl-body td { padding:.6rem .9rem; border-top:1px solid #1e293b; white-space:nowrap; }
+    #tbl-body tr:hover { background:#111c33; }
+  </style>
+
+  <script type="module" src="assets/js/dashboard.js"></script>
+</body>
+</html>

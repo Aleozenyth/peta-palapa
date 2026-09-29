@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peta Palapa Ring · Web GIS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 h-screen overflow-hidden">
+
+  <button id="btn-toggle" aria-label="Buka/tutup panel"
+          class="md:hidden fixed top-3 left-3 z-[1200] w-11 h-11 rounded-xl bg-sky-500 text-white text-xl shadow-lg">☰</button>
+
+  <div class="flex h-full">
+    <aside id="sidebar" class="sidebar w-80 max-w-[85vw] shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col z-[1100]">
+      <header class="p-4 pt-16 md:pt-4 border-b border-slate-800 bg-gradient-to-br from-slate-800 to-slate-900">
+        <h1 class="text-base font-bold tracking-wide">🌐 Peta Palapa Ring</h1>
+        <p class="text-xs text-slate-400 mt-1">Infrastruktur serat optik Barat · Tengah · Timur</p>
+        <a href="dashboard.html" class="mt-3 flex items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold bg-sky-500 text-slate-950 hover:brightness-110 transition">
+          📊 Dashboard NOC &amp; CRM <span>→</span>
+        </a>
+      </header>
+
+      <div class="flex-1 overflow-y-auto p-4 space-y-4">
+        <section class="panel">
+          <h2 class="panel-title">🔎 Cari Node / Kota</h2>
+          <div class="relative">
+            <input id="search" type="text" autocomplete="off" placeholder="Mis. Kendari, Batam, Jayapura…"
+                   class="w-full rounded-lg bg-slate-950 border border-slate-700 px-3 py-2 text-sm outline-none focus:border-sky-400">
+            <ul id="suggest" class="suggest hidden"></ul>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 class="panel-title">🛰️ Filter Layer</h2>
+          <label class="row"><input type="checkbox" data-layer="barat" checked> <span class="swatch" style="background:#ef4444"></span> Paket Barat <em id="cnt-barat"></em></label>
+          <label class="row"><input type="checkbox" data-layer="tengah" checked> <span class="swatch" style="background:#22c55e"></span> Paket Tengah <em id="cnt-tengah"></em></label>
+          <label class="row"><input type="checkbox" data-layer="timur" checked> <span class="swatch" style="background:#3b82f6"></span> Paket Timur <em id="cnt-timur"></em></label>
+          <label class="row"><input type="checkbox" data-layer="node" checked> <span class="swatch round" style="background:#fbbf24"></span> Node POP / Landing <em id="cnt-node"></em></label>
+          <button id="btn-reset" class="mt-3 w-full rounded-lg border border-slate-700 py-2 text-xs hover:bg-slate-800 transition">↺ Reset tampilan peta</button>
+        </section>
+
+        <section class="panel" id="panel-stat">
+          <h2 class="panel-title">📈 Ringkasan</h2>
+          <div class="grid grid-cols-2 gap-2 text-center">
+            <div class="stat"><b id="stat-node">0</b><span>Node</span></div>
+            <div class="stat"><b id="stat-km">0</b><span>km kabel (est.)</span></div>
+          </div>
+        </section>
+
+        <section class="panel" id="detail">
+          <h2 class="panel-title">ℹ️ Detail</h2>
+          <p class="text-xs text-slate-400">Klik kabel atau node pada peta untuk melihat informasi lengkap.</p>
+        </section>
+      </div>
+
+      <footer class="p-3 text-[10px] text-slate-500 border-t border-slate-800 leading-relaxed">
+        Jarak dihitung geodesik (haversine) dari geometri ilustrasi, bukan panjang kabel aktual.
+      </footer>
+    </aside>
+
+    <main class="flex-1 relative">
+      <div id="map" class="absolute inset-0"></div>
+      <div class="legend hidden sm:block">
+        <div><i style="background:#ef4444"></i> Barat</div>
+        <div><i style="background:#22c55e"></i> Tengah</div>
+        <div><i style="background:#3b82f6"></i> Timur</div>
+        <div class="dashed"><i></i> Kabel laut (putus-putus)</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

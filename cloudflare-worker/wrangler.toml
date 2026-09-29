@@ -1,0 +1,7 @@
+name = "palapa-ring-api"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+# Deploy:  cd cloudflare-worker && npx wrangler deploy
+# Lokal :  cd cloudflare-worker && npx wrangler dev
+# Wrangler (esbuild) otomatis membundel ../assets/js/data-palapa.js.
