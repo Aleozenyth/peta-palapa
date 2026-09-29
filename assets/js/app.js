@@ -1,8 +1,5 @@
 import { PALAPA_DATA } from './data-palapa.js';
-
-/* Isi dengan URL Worker (mis. 'https://palapa-ring-api.akun.workers.dev') agar data diambil dari API.
-   Kosong = pakai data lokal (data-palapa.js). */
-const API_URL = 'https://palapa-ring-api.aleozenyth.workers.dev';
+import { loadData, showSource } from './api.js';
 
 const PAKET = PALAPA_DATA.paket;
 
@@ -19,29 +16,15 @@ function haversine([lon1, lat1], [lon2, lat2]) {
 }
 const lineKm = (coords) => coords.slice(1).reduce((s, c, i) => s + haversine(coords[i], c), 0);
 
-async function loadData() {
-  if (!API_URL) return PALAPA_DATA;
-  try {
-    const r = await fetch(`${API_URL}/api/palapa-data`);
-    if (!r.ok) throw new Error(r.status);
-    return { ...(await r.json()), paket: PAKET };
-  } catch (e) {
-    console.warn('API gagal, memakai data lokal:', e);
-    return PALAPA_DATA;
-  }
-}
-
 /* ---------- Peta & basemap ---------- */
 const map = L.map('map', { zoomControl: false }).setView([-2.548926, 118.014863], 5);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
 const basemaps = {
-  'OpenStreetMap': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom: 19 }),
-  'Esri Light': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-    { attribution: 'Tiles &copy; Esri', maxZoom: 16 }),
-  'Esri Dark': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-    { attribution: 'Tiles &copy; Esri', maxZoom: 16 })
+  'OpenStreetMap': L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', maxZoom: 19 }),
+  'Satelit (Esri)': L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    { attribution: 'Tiles &copy; Esri &mdash; Maxar, Earthstar Geographics, dan kontributor GIS', maxZoom: 18 })
 };
 basemaps['OpenStreetMap'].addTo(map);
 L.control.layers(basemaps, null, { position: 'topright', collapsed: true }).addTo(map);
@@ -190,6 +173,7 @@ map.on('click', () => { if (window.innerWidth < 768) $('#sidebar').classList.rem
 
 /* ---------- Start ---------- */
 loadData().then((data) => {
+  showSource($('#data-source'), data.source);
   render(data);
   bindFilters();
   bindSearch();

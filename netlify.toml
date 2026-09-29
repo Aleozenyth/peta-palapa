@@ -1,0 +1,25 @@
+# Konfigurasi deploy Netlify — Peta Palapa Ring
+[build]
+  publish   = "."                    # situs statis di root proyek
+  functions = "netlify/functions"    # API serverless (palapa-api.mjs)
+
+[functions]
+  node_bundler = "esbuild"           # membundel import ../../assets/js/data-palapa.js
+
+# Jangan meng-cache HTML agar pembaruan langsung terlihat
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"

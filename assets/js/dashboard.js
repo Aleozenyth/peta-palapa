@@ -1,7 +1,11 @@
 import { PALAPA_DATA } from './data-palapa.js';
+import { loadData, showSource } from './api.js';
 
-const { cables, nodes, paket: PAKET } = PALAPA_DATA;
 const $ = (s) => document.querySelector(s);
+const data = await loadData();
+const { cables, nodes } = data;
+const PAKET = PALAPA_DATA.paket;
+showSource($('#data-source'), data.source);
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = (n, d = 0) => Number(n).toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
 
