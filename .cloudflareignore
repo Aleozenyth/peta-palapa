@@ -1,8 +1,0 @@
-node_modules
-cloudflare-worker
-netlify
-.git
-generate-zip.js
-package.json
-package-lock.json
-README.md
