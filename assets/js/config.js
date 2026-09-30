@@ -11,6 +11,6 @@
  */
 export const CONFIG = {
   USE_API: true,
-  API_BASE: '',
+  API_BASE: 'https://peta-palapa.aleozenyth.workers.dev',
   TIMEOUT_MS: 6000
 };
